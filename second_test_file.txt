@@ -1,0 +1,1 @@
+This is a second test text file that will be added to the git repository.
