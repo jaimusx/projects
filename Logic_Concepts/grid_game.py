@@ -1,9 +1,13 @@
+#This is a grid game similar to candy crush but uses letters.
+#Created for learning.
+#
 from random import choice
 
 #State main variables
 score = 100
 turn = 100
 goalscore = 100
+#The boardgame grid
 board = [[0,0,0,0,0,0,0,0],
          [0,0,0,0,0,0,0,0],
          [0,0,0,0,0,0,0,0],
@@ -18,11 +22,9 @@ def InitializeGrid(board):
     for i in range(8):
         for j in range(8):
             board[i][j] = choice(['Q','R','S','T','U'])
-    #print('Initilizing grid')
 
 def Initialize(board):
-    #Initialize game
-    #Initialize grid
+    #Initialize game and grid
     InitializeGrid(board)
     global score
     score = 0
@@ -83,18 +85,19 @@ def IsValid(move):
 def GetMove():
     #Get the move from the user
     #print instructions
-    print("Enter a move by specifying the space and direction (u,d,l,r). Spaces should list ccolumn then row")
-    print("\nFor example, e3u would swap poisition e3 with the one above, and f7r would swap f7 to the right.")
+    print("Enter a move by specifying the space and direction (u,d,l,r). 
+	       Spaces should list column then row \nFor example, e3u would 
+		   swap poisition e3 with the one above, and f7r would swap f7 to the right.")
     #Get move
-    move = input("Enter move :")
+    move = input("Enter move:")
     #Loop until a valid move is recognized
     while not IsValid(move):
         move = input("That's not a valid move!    Enter another move:\t")
-
     return move
 
 def ConvertLetterToCol(Col):
-    if Col == 'a':
+    #As described in the function name
+	if Col == 'a':
         return 0
     elif Col == 'b':
         return 1

@@ -1,38 +1,42 @@
 from tkinter import *
-import math #incase you want to do square roots and powers later
+import math #Incase you want to do square roots and powers later
 
+#Sets GUI Window characteristics.
 root = Tk()
 root.resizable(width = False, height = False)
 root.title("Calculator")
 
 num1=StringVar()
 
+#Function to replace the display character of multiply and divide.
 def rplc_char():
-    changer=box1.get()
-    changed=changer.replace('÷','/')
-    changed=changed.replace('x','*')
+    changer = box1.get()
+    changed = changer.replace('÷','/')
+    changed = changed.replace('x','*')
     return changed
-       
+
+#Function to do calculations     
 def calculate():
-    uinput=rplc_char()
-    
+    uinput = rplc_char()  
     try:
-        sum1=eval(uinput)
+        sum1 = eval(uinput)
         clrscn()
         box1.insert(END,sum1)
     except:
         clrscn()
         box1.insert(0,'ERROR')
-
+		
+#Function to except input for the calculations.
 def action(i):
-    value=num1.get()
+    value = num1.get()
     num1.set(value+i)
-    
+
+#Clears the text box that displays numbers and calculations for the clear button "C".    
 def clrscn():
     box1.delete(0, END)
     return
 
-#Buttons
+#Sets buttons
 button0 = Button(root,text="0",width=4,height=2,command=lambda:action('0'))
 button0.grid(row=5,column=0,columnspan=2,sticky='nsew')
 button1 = Button(root,text="1",width=4,height=2,command=lambda:action('1'))
@@ -67,9 +71,11 @@ buttonpnt = Button(root,text=".",width=4,height=2,command=lambda:action('.'))
 buttonpnt.grid(row=5,column=2,sticky='nsew')
 buttonetr = Button(root,text="=",width=4,height=2,command=calculate)
 buttonetr.grid(row=4,column=3,rowspan=2,sticky='nsew')                 
-#Entrybox
+
+#Sets entrybox
 box1 = Entry(root,bd=20,textvariable=num1,justify=RIGHT,insertwidth=1,font=20)
 box1.grid(row=0,column=0,columnspan=4,sticky='nsew')             
 
-#main program declaration
-root.mainloop()
+#Initilizes the GUI Window.
+if __name__ == "__main__":
+	root.mainloop()

@@ -1,6 +1,9 @@
-# Pyramid
+#A Pyramid game that asks the user if they wish to 
+#continue playing after each turn.
+
 def prmd():
     cont = True
+	#Initializes the loop to get a valid user input then prints the pyramid
     while cont:
         num = input("\nEnter the number of rows you want for your Pyramid:\t")
         try:
@@ -14,6 +17,8 @@ def prmd():
 
 def cnt_prmd():
     cont = True
+	#Initializes the loop to get a valid user input.
+	#The game will end or contiue depending on the user input.
     while cont:
         choice = input("\nDo you wish to make another pyramid?:(y/n)\t")
         if choice.upper() in ['Y', 'YES']:

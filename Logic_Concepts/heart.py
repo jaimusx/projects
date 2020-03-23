@@ -1,8 +1,8 @@
+#Created for logic on how o draw a heart.
+
 num = int(input("column\t"))
 c = int(num/2)
-#print(c)
 n = 3 + c
-#print(n)
 
 for i in range(n):
     for j in range(num):

@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 import random
 
+#Sets characteristics such as name and dimensions for the GUI Window.
 root = Tk()
 root.title("Randomizer")
 root.resizable(width = False, height = False)
@@ -10,10 +11,11 @@ root.geometry("280x270")
 mylist = []
 
 def get_data(i):
+	#Gets user input and assigns to a list.
     task = box1.get()
-
     if task != "":
         i.append(task)
+		#The print statement is just for console viewing. 
         print(i)
         display_data()
         box1.delete(0, END)
@@ -22,22 +24,22 @@ def get_data(i):
     box1.delete(0, END)
 
 def display_data():
-    list_names.delete(0, END)
-    
+	#Displays recent list items in a text box.
+    list_names.delete(0, END)    
     for items in mylist:
         list_names.insert(END, items)
 
 def del_one():
+	#Allows user to delete a selected item in the text box.
     task = list_names.get("active")
-
     if task in mylist:
         mylist.remove(task)
     display_data()
 
 def del_all():
+	#Allows user to delete all items in the text box.
     confirmed = messagebox.askyesno("Please Confirm", "Do you really want to delete all?")
-    task = ""
-    
+    task = ""    
     if confirmed == True:
         global mylist
         mylist = []
@@ -45,14 +47,16 @@ def del_all():
         label3["text"] = task
         
 def random_select():
+	#Randomly selects an item in the list from the text box.
     task = random.choice(mylist)
     label3["text"] = task
 
-    "Deletes the randomly selected name"
+    #Deletes the randomly selected name.
     if task in mylist:      
         mylist.remove(task)
     display_data()
 
+#Initilizes all labels and buttons.
 label1 = Label(root,text = "Enter Name:")
 label1.grid(row = 0, column = 1)
 
@@ -66,6 +70,7 @@ ID = StringVar()
 box1 = Entry(root, bd = 4, textvariable = ID)
 box1.grid(row = 1, column = 1)
 
+#This button needed a special function within to input items into the list.
 buttonA = Button(root, text = "Submit", command = lambda: get_data(mylist), width = 5)
 buttonA.grid(row = 2, column = 1)
 
@@ -86,4 +91,6 @@ list_bar.grid(row = 1, column = 4, rowspan = 7, sticky = 'nsew')
 list_names.configure(yscrollcommand = list_bar.set)
 list_bar.configure(command = list_names.yview)
 
-root.mainloop()
+#Initilizes the GUI window
+if __name__ == "__main__":
+	root.mainloop()
