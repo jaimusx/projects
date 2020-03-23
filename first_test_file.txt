@@ -1,3 +1,0 @@
-This is a test text file. We are now making changes to be added into the git repository.
-This new test is to add a line to the text file and test the git diff command.
-Another new line
