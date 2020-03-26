@@ -1,4 +1,4 @@
-#Created for logic on how o draw a heart.
+#Created for logic on how to draw a heart.
 
 num = int(input("column\t"))
 c = int(num/2)
