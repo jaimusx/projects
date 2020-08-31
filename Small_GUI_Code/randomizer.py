@@ -11,11 +11,11 @@ root.geometry("280x270")
 mylist = []
 
 def get_data(i):
-	#Gets user input and assigns to a list.
+    #Gets user input and assigns to a list.
     task = box1.get()
     if task != "":
         i.append(task)
-		#The print statement is just for console viewing. 
+	#The print statement is just for console viewing. 
         print(i)
         display_data()
         box1.delete(0, END)
@@ -24,20 +24,20 @@ def get_data(i):
     box1.delete(0, END)
 
 def display_data():
-	#Displays recent list items in a text box.
+    #Displays recent list items in a text box.
     list_names.delete(0, END)    
     for items in mylist:
         list_names.insert(END, items)
 
 def del_one():
-	#Allows user to delete a selected item in the text box.
+    #Allows user to delete a selected item in the text box.
     task = list_names.get("active")
     if task in mylist:
         mylist.remove(task)
     display_data()
 
 def del_all():
-	#Allows user to delete all items in the text box.
+    #Allows user to delete all items in the text box.
     confirmed = messagebox.askyesno("Please Confirm", "Do you really want to delete all?")
     task = ""    
     if confirmed == True:
@@ -47,7 +47,7 @@ def del_all():
         label3["text"] = task
         
 def random_select():
-	#Randomly selects an item in the list from the text box.
+    #Randomly selects an item in the list from the text box.
     task = random.choice(mylist)
     label3["text"] = task
 
@@ -93,4 +93,4 @@ list_bar.configure(command = list_names.yview)
 
 #Initilizes the GUI window
 if __name__ == "__main__":
-	root.mainloop()
+    root.mainloop()
