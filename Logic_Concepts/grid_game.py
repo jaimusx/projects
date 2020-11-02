@@ -159,8 +159,8 @@ def RemovePieces(board):
             if (board[i][j] == board[i][j+1]) and (board[i][j] == board[i][j+2]):
                 #Three in a row are the same!
                 remove[i][j] = 1;
-                remove[i+1][j] = 1;
-                remove[i+2][j] = 1;
+                remove[i][j+1] = 1;
+                remove[i][j+2] = 1;
     #Go through Columns
     for j in range(8):
         for i in range(6):
