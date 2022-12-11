@@ -1,61 +1,99 @@
 from tkinter import *
 from tkinter import scrolledtext
 
+# List to keep all search results
+search_list = []
+
+
+# Function to find and highlight all instances of a string in the entry box as it are writen.
 def get_text(var, indx, mode):
     word = my_var.get()
+    search_list.clear()
     start = '1.0'
-    txtbox.tag_remove('found', start, END)
-    if len(word) > 0:
-        txtbox.mark_set('next', txtbox.search(word, start, regexp=True, nocase=1))
-        txtbox.see('next')
-        if word:
-            while 1:
-                start = txtbox.search(word, start, regexp=True ,nocase=1, stopindex=END)
-                if not start:
-                    break
-                last = '%s+%dc' % (start, len(word))
-                txtbox.tag_add('found', start, last)
-                start = last
-                txtbox.tag_config('found', background='yellow')
+    text_box.tag_remove('found', start, END)
+    global matches_found
+    matches_found = 0
+    if word:
+        while 1:
+            start = text_box.search(word, start, regexp=True, nocase=True, stopindex=END)
+            if not start:
+                break
+            last = '%s+%dc' % (start, len(word))
+            text_box.tag_add('found', start, last)
+            matches_found += 1
+            start = last
+            text_box.tag_config('found', background='yellow')
+    total_label.config(text=f"0:{str(matches_found)}")
 
+
+# Function to create new highlight and go through all stings one at a time. Highlight will cycle.
 def next_match():
-    while (txtbox.compare('next', '<', END)) and 'found' in txtbox.tag_names('next'):
-        txtbox.mark_set('next', 'next+1c')
-    n_match = txtbox.tag_nextrange('found', 'next')
-    if n_match:
-        txtbox.tag_remove('next', '1.0', END)
-        txtbox.mark_set('next', n_match[0])
-        txtbox.see('next')
-        txtbox.tag_add('next','next', '%s+%dc' %('next',len(my_var.get())))
-        txtbox.tag_config('next', background='cyan')
+    text_box.tag_remove('next', '1.0', END)
+    end_search_label.config(text="")
+    word = find_entry.get()
+    count_pos = 0
+    if word:
+        start = "1.0" if search_list == [] else search_list[-1]
+        start = text_box.search(word, start, nocase=True, stopindex=END)
+        last = '%s+%dc' % (start, len(word))
 
+        try:
+            text_box.tag_add('next', start, last)
+            text_box.tag_config('next', background='cyan', foreground='black', underline=True)
+            counter_list = start.split('.')
+            text_box.mark_set("insert", "%d.%d" % (int(counter_list[0]), int(counter_list[1])))
+            text_box.see(float(int(counter_list[0])))
+            search_list.append(last)
+            for i in search_list:
+                count_pos += 1
+            total_label.config(text=f"{str(count_pos)}:{str(matches_found)}")
+        except TclError:
+            end_search_label.config(text="Search complete. No further matches", anchor='w')
+            search_list.clear()
+
+
+# Primary TK GUI window
 master_window = Tk()
 
 my_var = StringVar()
 my_var.trace_add('write', get_text)
 
-# Parent widget for the buttons
+# Initiate frame for buttons, text entry box, and results labels
 buttons_frame = Frame(master_window)
-buttons_frame.grid(row=0, column=0, sticky=W+E)
+buttons_frame.grid(row=0, column=0, sticky="we")
 
-box1 = Entry(buttons_frame, bd=4, textvariable=my_var, width=125)
-box1.grid(row=0, column=1, padx=10, pady=10, sticky='nsew')
+# Buttons, entry box, and label creation.
+find_label = Label(buttons_frame, text="Enter your search query:", font=("Helvetica", 12))
+find_label.grid(row=0, column=0, columnspan=5, sticky='nsew')
 
-n_btn = Button(buttons_frame, text="Next", command=next_match, width=10)
-n_btn.grid(row=0, column=2, padx=10, pady=10, sticky='e')
+end_search_label = Label(buttons_frame, text="", width=40)
+end_search_label.grid(row=2, column=0, padx=(10, 0), sticky='w')
 
-# Group1 Frame ----------------------------------------------------
-group1 = LabelFrame(master_window, text="Text Box", padx=5, pady=5)
-group1.grid(row=1, column=0, columnspan=3, padx=10, pady=10, sticky='nsew')
+count_label = Label(buttons_frame, text="Count:", width=5, anchor='e')
+count_label.grid(row=2, column=2, padx=10)
+
+total_label = Label(buttons_frame, text="0:0", width=7)
+total_label.grid(row=2, column=3, padx=10, sticky='nsew')
+
+find_entry = Entry(buttons_frame, bd=4, textvariable=my_var, width=125)
+find_entry.grid(row=1, column=0, columnspan=5, padx=10, sticky='nsew')
+find_entry.focus()
+
+next_btn = Button(buttons_frame, text="Next", width=20, command=next_match)
+next_btn.grid(row=2, column=4, padx=10, pady=5, sticky='e')
+
+# Scrollable text box frame ----------------------------------------------------
+text_frame = LabelFrame(master_window, text="Text Box", padx=5, pady=5)
+text_frame.grid(row=1, column=0, columnspan=3, padx=10, pady=10, sticky='nsew')
 
 master_window.columnconfigure(0, weight=1)
 master_window.rowconfigure(1, weight=1)
 
-group1.rowconfigure(0, weight=1)
-group1.columnconfigure(0, weight=1)
+text_frame.rowconfigure(0, weight=1)
+text_frame.columnconfigure(0, weight=1)
 
-# Create the textbox
-txtbox = scrolledtext.ScrolledText(group1, width=100, height=50)
-txtbox.grid(row=0, column=0, sticky='nesw')
+# Create the scrollable text box
+text_box = scrolledtext.ScrolledText(text_frame, width=75, height=35)
+text_box.grid(row=0, column=0, sticky='nsew')
 
 mainloop()
