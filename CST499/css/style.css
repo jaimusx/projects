@@ -1,0 +1,101 @@
+.banner {
+    overflow: hidden;
+    background-color: white;
+}
+.banner img {
+    float: left;
+    width: 125px;
+    height: 125px;
+}
+.banner h1{
+    color: black; 
+    font-family: Copperplate Gothic Light;
+    font-size: 50px;
+    padding: 10px 10px;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.login-message {
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+    color: red;
+    position: right;
+}
+.reg-container {
+    font-family: Arial, sans-serif;
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: center;
+}
+.form-reg-container {
+    border-radius: 5px;
+    background-color: white;
+    padding: 20px;
+}
+.profile-container {
+    font-family: Arial, sans-serif;
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+}
+.form-profile-container {
+    border-radius: 5px;
+    background-color: white;
+    padding: 20px;
+}
+.login-container {
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 20px;
+}
+.form-login-container {
+    border-radius: 5px;
+    background-color: white;
+    padding: 20px;
+}
+.home-message{
+    float: left;
+    justify-content: space-between;
+    color: white;
+    background-color: rgb(117, 38, 59);
+    border-radius: 5px;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+.vertical-navbar {
+    float: left;
+    font-family: Arial, sans-serif;
+    height: 100%;
+}
+.vertical-navbar ul {
+list-style-type: none;
+margin: 0;
+padding: 0;
+width: 200px;
+background-color: white;
+height: 100%;
+}
+.vertical-navbar li a {
+display: block;
+color: black;
+padding: 8px 16px;
+text-decoration: none;
+height: 50px;
+}
+.vertical-navbar li a.active {
+background-color: rgb(117, 38, 59);
+color: white;
+}
+.vertical-navbar li a:hover:not(.active) {
+background-color: grey;
+color: white;
+}
+.error {
+    color: red;
+}
+.success {
+    color: green;
+}
