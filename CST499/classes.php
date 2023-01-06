@@ -237,28 +237,29 @@ class courseRegister {
     # Run the query.
     $query = mysqli_query($con, $sql);
 
-    if (dbQuery::checkResults($query) == true) {
+    if (dbQuery::checkResults($query) == true && mysqli_num_rows($query) > 0) {
+
+      # Populate table headers.
+      $data = '<tr style="background-color: rgb(117, 38, 59); color: white; font-size: 18px;">
+      <td> Record Number </td>
+      <td> Semester </td>
+      <td> Course Name </td>
+      <td> Delete Course </td>
+      </tr>';
 
       while ($row = mysqli_fetch_assoc($query)) {
-        $data .= '<tr style="background-color: rgb(117, 38, 59); color: white; font-size: 18px;">';
-        $data .= '<td> Record Number </td>';
-        $data .= '<td> Semester </td>';
-        $data .= '<td> Course Name </td>';
-        $data .= '<td> Delete Course </td>';
-        $data .= '</tr>';
         $data .= '<tr>';
         $data .= '<td>' . $row['record'] . '</td>';
         $data .= '<td>' . $row['course'] . '</td>';
         $data .= '<td>' . $row['semester'] . '</td>';
-        $data .= '<td><a href="my_courses.php?record=' . $row['record'] . '&course-name=' . $row['course'] . '&semester-id=' . $row['semester_id'] . '"class="btn btn-danger">Delete</a></td>';
-        $data .= '</tr>';
+        $data .= '<td><a onClick="javascript:return confirm(\'Are you sure you want to delete this course?\')" href="my_courses.php?record=' . $row['record'] . '&course-name=' . $row['course'] . '&semester-id=' . $row['semester_id'] . '"class="btn btn-danger">Delete</a></td>';
       }
 
-      return $data;
+      $data .= '</tr>';
 
-    } else {
-      exit(header("Location: ../CST499/my_courses.php?error=db-error"));
-    }
+      return $data;
+      
+    } 
   }
 
   public static function removeCourse($record, $course_name, $semesterID) {
