@@ -1,3 +1,9 @@
+<?php
+
+if (session_status() === PHP_SESSION_NONE) {
+  exit(header("Location: ../CST499/index.php"));
+}
+?>
 <html>
 <head>
 </head>
