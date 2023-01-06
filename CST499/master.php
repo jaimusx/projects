@@ -1,17 +1,19 @@
 <?php
-  error_reporting(E_ALL ^ E_NOTICE);
-  ini_set('session.use_only_cookies','1');
-  session_start();
+
+error_reporting(E_ALL ^ E_NOTICE);
+ini_set('session.use_only_cookies','1');
+session_start();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<title>Master Page</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
   <link rel="stylesheet" href="css/style.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <style>
 	body {
     background-image: url(img/university_B.jpg);
@@ -24,10 +26,10 @@
 <div class="banner">
   <img src="img/logo.png" alt="logo" />
   <h1>ABC Universtiy
-    <?php
-	  if( isset($_SESSION['username'])) {
-			echo "<span class='login-message'>Welcome {$_SESSION['username']}!</span>";
-	  }
+	<?php
+	if( isset($_SESSION['username'])) {
+		echo "<span class='login-message'>Welcome {$_SESSION['username']}!</span>";
+	}
 	?>
   </h1>
 </div>

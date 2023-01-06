@@ -2,6 +2,7 @@
   include_once 'master.php';  
 ?>
 <head>
+  <title>About Us</title>
   <style>
     h1 {
       color: #444;

@@ -1,7 +1,9 @@
 <?php
   include_once 'master.php';  
 ?>
+<html>
 <head>
+  <title>Student Registration Page</title>
   <style>
     h1 {
       color: #444;
@@ -17,6 +19,7 @@
 	    width: 225px;
       display: inline-block;
       padding: 5px;
+      margin: 5px;
 	  }
     input[type="submit"] {
       background-color: rgb(117, 38, 59);
@@ -37,7 +40,7 @@
 <div class="reg-container">
   <div class="form-reg-container">
     <h1>Registration Form</h1>
-    <form action='mysql_conn.php' method="POST">
+    <form action='checks.php' method="POST">
       <label for="fname">First Name:</label>
       <input type='text' name='fname' id="fname" required/>
       <br>
@@ -51,20 +54,36 @@
       <input type='text' name='phone' id="phone" required/>
       <br>
       <label for="email">Email:</label>
-      <input type="email" id="email" name="email" required>
+      <input type="text" id="email" name="email" required>
       <br>
       <label for="password">Password:</label>
       <input type="password" id="pwd" name="pwd" required>
       <br>
       <label for="password-confirm">Confirm Password:</label>
       <input type="password" id="pwd-confirm" name="pwd-confirm" required>
-      <br>
+      <br><br>
+      <a href="login.php">Already Registered? Click Here to Login</a>
       <input type="submit" name="register" value="Register" id-"register">
     </form>
     <?php
-      #if($_GET['pwd'] !== $_GET['password-confirm']) {
-      #  echo '<div class="error">Your password does not match! Please try again.</div>';
-      #}
+      if (isset($_GET["error"])) {
+        if ($_GET["error"] == "passwordmatcherror") {
+          echo '<p class="error">Passwords do not match! Please try again.</p>';
+        } else if ($_GET["error"] == "invalidemail") {
+          echo '<p class="error">The email address entered is invalid.</p>';
+        } else if ($_GET["error"] == "userexists") {
+          echo '<p class="error">The email address entered is already registered.</p>';
+        } else if ($_GET["error"] == "badmethod") {
+          echo '<p class="error">Error connecting to database or entry fields are incorect.</p>';
+        }
+      }
+      if (isset($_GET["register"])) {
+        if ($_GET["register"] == "success") {
+          echo '<p class="success">You have successfully registered as a student!</p>';
+        } else {
+          echo '<p class="error">Error in student registration. Please contact your academic advisor.</p>';
+        }
+      }
     ?>
   </div>
 </div>

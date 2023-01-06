@@ -1,12 +1,11 @@
 <?php
-  include_once 'master.php';
-  if(isset($_SESSION['username'])) {
-    session_start();
-  } else {
-    header("Location: ../CST499/index.php");
-  }
+include_once 'master.php';
+if (session_status() === PHP_SESSION_NONE) {
+  exit(header("Location: ../CST499/index.php"));
+}
 ?>
 <head>
+  <title>Profile Page</title>
   <style>
     label {
       width: 250px;

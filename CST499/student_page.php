@@ -1,11 +1,11 @@
 <?php
-  include_once 'master.php';
-  if(isset($_SESSION['username'])) {
-    session_start();
-  } else {
-    header("Location: ../CST499/index.php");
-  }
+include_once 'master.php';
+if (session_status() === PHP_SESSION_NONE) {
+  exit(header("Location: ../CST499/index.php"));
+}
 ?>
+<html>
+  <title>Student Page</title>
 <body>
   <div style="float: left; justify-content: space-between;">
     <?php
@@ -36,6 +36,7 @@
     </div>
   </div>
 </body>
+<html>
 <?php
   include_once 'footer.php';
 ?>

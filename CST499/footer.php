@@ -1,3 +1,7 @@
+<html>
+<head>
+</head>
+<body>
 <div class="navbar-fixed-bottom row-fluid">
   <div class="navbar-inner">
     <div style="color: white" class="container text-center">
