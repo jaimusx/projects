@@ -36,7 +36,6 @@
 }
 .profile-container {
     font-family: Arial, sans-serif;
-    max-width: 1000px;
     margin: 0 auto;
     text-align: center;
 }
@@ -71,19 +70,19 @@
     height: 100%;
 }
 .vertical-navbar ul {
-list-style-type: none;
-margin: 0;
-padding: 0;
-width: 200px;
-background-color: white;
-height: 100%;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 200px;
+    background-color: white;
+    height: 100%;
 }
 .vertical-navbar li a {
-display: block;
-color: black;
-padding: 8px 16px;
-text-decoration: none;
-height: 50px;
+    display: block;
+    color: black;
+    padding: 8px 16px;
+    text-decoration: none;
+    height: 50px;
 }
 .vertical-navbar li a.active {
 background-color: rgb(117, 38, 59);
