@@ -1,7 +1,7 @@
 <?php
 
-if (session_status() === PHP_SESSION_NONE) {
-  exit(header("Location: ../CST499/index.php"));
+if (!isset($_SESSION['logged_in']) || !$_SESSION['logged_in']) {
+  exit(header("Location: ../CST499/index"));
 }
 ?>
 <html>
@@ -16,9 +16,9 @@ if (session_status() === PHP_SESSION_NONE) {
 <div class="vertical-navbar">
   <ul>
     <li><a class="active" style="font-size: 18px">My Degree</a></li>
-    <li><a href="my_courses.php">My Courses</a></li>
-    <li><a href="#MyContact">My Contacts</a></li>
-    <li><a href="course_registration.php">Register for a Course</a></li>
+    <li><a href="my_courses">My Courses</a></li>
+    <li><a href="student_contacts">My Contacts</a></li>
+    <li><a href="course_registration">Register for a Course</a></li>
   </ul>
 </div>
 </body>

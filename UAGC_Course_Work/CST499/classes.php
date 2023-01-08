@@ -1,5 +1,11 @@
 <?php
 
+# Prevent access for this file from a url request.
+if(!isset($_SERVER['HTTP_REFERER'])){
+  // redirect them to your desired location
+  exit(header('Location: ../CST499/index.php'));
+}
+
 class dbConnect {
 
     public static function mysqlConn() {
@@ -39,12 +45,12 @@ class studentRegister {
 
       # Display results in the url.
       if (dbQuery::checkResults($query) == true) {
-        exit(header("Location: ../CST499/registration.php?register=success"));
+        exit(header("Location: ../CST499/registration?register=success"));
       } else {
-        exit(header("Location: ../CST499/registration.php?register=failed"));
+        exit(header("Location: ../CST499/registration?register=failed"));
       }
     } else {
-      exit(header("Location: ../CST499/registration.php?register=error"));
+      exit(header("Location: ../CST499/registration?register=error"));
     }
   }
 
@@ -74,7 +80,7 @@ class studentRegister {
     $sql = "SELECT * FROM tblstudent WHERE email =?;";
     $stmt = mysqli_stmt_init($con);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
-      exit(header("Location: ../CST499/registration.php?stmtfailed"));
+      exit(header("Location: ../CST499/registration?stmtfailed"));
     } 
     mysqli_stmt_bind_param($stmt, "s", $email);
     mysqli_stmt_execute($stmt);
@@ -108,21 +114,21 @@ class studentRegister {
       $phone = $_POST['phone'];
 
       if (studentRegister::pwdMatch($pwd, $pwd_conf) === false) {
-        exit(header("Location: ../CST499/registration.php?error=passwordmatcherror"));
+        exit(header("Location: ../CST499/registration?error=passwordmatcherror"));
       }
 
       if (studentRegister::validEmail($email) === false) {
-        exit(header("Location: ../CST499/registration.php?error=invalidemail"));
+        exit(header("Location: ../CST499/registration?error=invalidemail"));
       }
 
       if (studentRegister::checkEmailExists($email) === true) {
-        exit(header("Location: ../CST499/registration.php?error=userexists"));
+        exit(header("Location: ../CST499/registration?error=userexists"));
       }
 
       $sql = "INSERT INTO tblstudent (email, pwd, firstName, lastName, address, phone) VALUES ('$email', '$pwd', '$fname', '$lname', '$address', '$phone');";
       studentRegister::executeRegistration($sql);
     } else {
-      exit(header("Location: ../CST499/registration.php?error=badmethod"));
+      exit(header("Location: ../CST499/registration?error=badmethod"));
     }
   }
 }
@@ -146,7 +152,7 @@ class studentLogin {
 
         if ($row == null) {
           # Display login error.
-          exit(header("Location: ../CST499/login.php?login=failed"));
+          exit(header("Location: ../CST499/login?login=failed"));
         } else if ($row['email'] == $_POST['email'] && $row['pwd'] == $_POST['pwd']) {
 
           # Returns to the home screen and removes the login and registration buttons.
@@ -158,15 +164,15 @@ class studentLogin {
           $_SESSION['pwd'] = $row['pwd'];
           $_SESSION['address'] = $row['address'];
           $_SESSION['phone'] = $row['phone'];
-          $_SESSION['login'] = true;
+          $_SESSION['logged_in'] = true;
 
-          exit(header("Location: ../CST499/student_page.php?login=success"));
+          exit(header("Location: ../CST499/student_page?login=success"));
         } else {
-          exit(header("Location: ../CST499/login.php?login=error"));
+          exit(header("Location: ../CST499/login?login=error"));
         }
       }
     } else {
-      exit(header("Location: ../CST499/login.php?login=error"));
+      exit(header("Location: ../CST499/login?login=error"));
     }
   }
 
@@ -183,7 +189,7 @@ class studentLogin {
 
       studentLogin::executeLogin($sql);
     } else {
-      exit(header("Location: ../CST499/index.php?index=error"));
+      exit(header("Location: ../CST499/index?index=error"));
     }
   }
 }
@@ -210,14 +216,14 @@ class courseRegister {
       } else if ($identifier === "courses") {
           # Get all semester collumn data.
           while ($row = mysqli_fetch_assoc($query)) {
-            $data .=  '<option value="' . $row['id'] . '">' . $row['course'] . '</option>';
+            $data .=  '<option value="' . $row['id'] . '">' . $row['course'] . ' - Availability: ' . $row['availability'] .'</option>';
           }
       }
 
       return $data;
 
     } else {
-      exit(header("Location: ../CST499/course_registration.php?error=db-error"));
+      exit(header("Location: ../CST499/course_registration?error=db-error"));
     }
   }
 
@@ -228,7 +234,6 @@ class courseRegister {
     $first_name = $_SESSION['username'];
     $last_name = $_SESSION['lastname'];
     $student_id = $_SESSION['student_id'];
-    $data = "";
 
     $con = dbConnect::mysqlConn();
 
@@ -252,7 +257,7 @@ class courseRegister {
         $data .= '<td>' . $row['record'] . '</td>';
         $data .= '<td>' . $row['course'] . '</td>';
         $data .= '<td>' . $row['semester'] . '</td>';
-        $data .= '<td><a onClick="javascript:return confirm(\'Are you sure you want to delete this course?\')" href="my_courses.php?record=' . $row['record'] . '&course-name=' . $row['course'] . '&semester-id=' . $row['semester_id'] . '"class="btn btn-danger">Delete</a></td>';
+        $data .= '<td><a onClick="javascript:return confirm(\'Are you sure you want to delete this course?\')" href="my_courses?record=' . $row['record'] . '&course-name=' . $row['course'] . '&semester-id=' . $row['semester_id'] . '"class="btn btn-danger">Delete</a></td>';
       }
 
       $data .= '</tr>';
@@ -276,9 +281,9 @@ class courseRegister {
 
     # Check if query returned anything.
     if (dbQuery::checkResults($query) == true) {
-      exit(header("Location: ../CST499/my_courses.php?course-delete=success"));
+      exit(header("Location: ../CST499/my_courses?course-delete=success"));
     } else {
-      exit(header("Location: ../CST499/my_courses.php?error=db-error"));
+      exit(header("Location: ../CST499/my_courses?error=db-error"));
     }
   }
 
@@ -314,7 +319,7 @@ class courseRegister {
 
       if ($row == null) {
         # Display login error.
-        exit(header("Location: ../CST499/course_registration.php?error=no-data"));
+        exit(header("Location: ../CST499/course_registration?error=no-data"));
       } else {
         $availablity = $row['availability'];
         $course_name = $row['course'];
@@ -342,12 +347,12 @@ class courseRegister {
 
     # Verify that the student is not already register to the course.
     if ($registered_course === $course_name) {
-      exit(header("Location: ../CST499/course_registration.php?enrolled=1"));
+      exit(header("Location: ../CST499/course_registration?enrolled=1"));
     }
 
     # Verify that there is a spot available for the course.
     if ($availablity === "0") {
-      exit(header("Location: ../CST499/course_registration.php?error=no-availability"));
+      exit(header("Location: ../CST499/course_registration?error=no-availability"));
     } else {
 
       # Register the student for the course selected to the tblenrollment table.
@@ -364,14 +369,14 @@ class courseRegister {
       # Verify the new query.
       if (dbQuery::checkResults($query3) == true) {
         # Retrun back to the course register page and display a successful message.
-        exit(header("Location: ../CST499/course_registration.php?course-register=success"));
+        exit(header("Location: ../CST499/course_registration?course-register=success"));
       } else {
         # Return an error warning on the course register page.
-        exit(header("Location: ../CST499/course_registration.php?error=db-error"));
+        exit(header("Location: ../CST499/course_registration?error=db-error"));
       }
     }
     } else {
-      header("Location: ../CST499/course_registration.php?error=db-error");
+      header("Location: ../CST499/course_registration?error=db-error");
       exit;
     }
   }

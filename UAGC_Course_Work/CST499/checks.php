@@ -1,7 +1,14 @@
 <?php
-include_once 'classes.php';
-# All statements call to class functions within the class.php file.
 
+# Prevent access for this file from a url request.
+if(!isset($_SERVER['HTTP_REFERER'])){
+  // redirect them to your desired location
+  exit(header('Location: ../CST499/index.php'));
+}
+
+include_once 'classes.php';
+
+# All statements call to class functions within the class.php file.
 if (isset($_POST['login'])) {
   studentLogin::setLogin();
 } else if (isset($_POST['register'])) {
@@ -15,6 +22,6 @@ if (isset($_POST['login'])) {
 
   echo $courses;
 } else {
-  exit(header("Location: ../CST499/index.php"));
+  exit(header("Location: ../CST499/index"));
 }
 ?>

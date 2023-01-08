@@ -1,7 +1,8 @@
 <?php
 include_once 'master.php';
-if (session_status() === PHP_SESSION_NONE) {
-  exit(header("Location: ../CST499/index.php"));
+
+if (!isset($_SESSION['logged_in']) || !$_SESSION['logged_in']) {
+  exit(header("Location: ../CST499/index"));
 }
 ?>
 <head>

@@ -1,7 +1,8 @@
 <?php
 include_once 'master.php';
-if (session_status() === PHP_SESSION_NONE) {
-  exit(header("Location: ../CST499/index.php"));
+
+if (!isset($_SESSION['logged_in']) || !$_SESSION['logged_in']) {
+  exit(header("Location: ../CST499/index"));
 }
 ?>
 <html>
@@ -13,7 +14,7 @@ if (session_status() === PHP_SESSION_NONE) {
         include_once 'student_nav_bar.php';
         }
     ?>
-    <div style="float: right; padding-left: 200px;" class="container">
+    <div style="float: right; padding-left: 275px;" class="container">
       <div style="background-color: white;" class="jumbotron">
         <div class="row">
           <div class="col-sm-4">

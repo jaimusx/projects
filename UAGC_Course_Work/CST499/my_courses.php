@@ -2,8 +2,8 @@
 include_once 'master.php';
 include_once "classes.php";
 
-if (session_status() === PHP_SESSION_NONE) {
-  exit(header("Location: ../CST499/index.php"));
+if (!isset($_SESSION['logged_in']) || !$_SESSION['logged_in']) {
+  exit(header("Location: ../CST499/index"));
 }
 
 if (isset($_GET['record']) && isset($_GET['course-name']) && isset($_GET['semester-id'])) {
@@ -34,11 +34,11 @@ if (isset($_GET['record']) && isset($_GET['course-name']) && isset($_GET['semest
     }
     .course-container {
       float: left;
-      padding-left: 375px;
+      padding-left: 280px;
       font-family: Arial, sans-serif; 
-      max-width: auto;
       margin: 0 auto;
-      text-align: center; 
+      text-align: center;
+      width: 1150px;
     }
     .course-form-container {
       border-radius: 5px;
@@ -92,7 +92,7 @@ if (isset($_GET['record']) && isset($_GET['course-name']) && isset($_GET['semest
           echo '<p class="error">Error in course deletion. Please contact your academic advisor.</p>';
         }
       }
-    ?>
+      ?>
     </div>
   </div>
 </div>

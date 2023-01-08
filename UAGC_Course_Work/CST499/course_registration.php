@@ -1,8 +1,8 @@
 <?php
 include_once 'master.php';
 
-if (session_status() === PHP_SESSION_NONE) {
-  exit(header("Location: ../CST499/index.php"));
+if (!isset($_SESSION['logged_in']) || !$_SESSION['logged_in']) {
+  exit(header("Location: ../CST499/index"));
 }
 ?>
 <!DOCTYPE html>
@@ -32,8 +32,8 @@ if (session_status() === PHP_SESSION_NONE) {
       include_once 'student_nav_bar.php';
     }
   ?>
-  <div style="float: left; padding-left: 400px;" class="profile-container">
-    <div class="form-profile-container">
+  <div style="float: left; padding-left: 356px;" class="profile-container">
+    <div style="width: 700px;" class="form-profile-container">
       <p>
         <?php
           echo "Welcome {$_SESSION['username']} {$_SESSION['lastname']}";
