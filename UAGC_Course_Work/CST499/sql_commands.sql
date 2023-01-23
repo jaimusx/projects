@@ -38,7 +38,7 @@ CREATE TABLE tblenrollment (
     semester_id VARCHAR(255) NOT NULL
 );
 
--- Create table for enrolling for courses
+-- Create table for the waiting list
 CREATE TABLE tblwaitlist (
     course VARCHAR(255) NOT NULL,
     studentID VARCHAR(255) NOT NULL,
