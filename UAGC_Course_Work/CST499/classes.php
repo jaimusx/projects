@@ -1,9 +1,9 @@
 <?php
 
-# Prevent access for this file from a url request.
+# Prevent access to this file from a url request.
 if(!isset($_SERVER['HTTP_REFERER'])){
   // redirect them to your desired location
-  exit(header('Location: ../CST499/index.php'));
+  exit(header('Location: ../CST499/index'));
 }
 
 class dbConnect {
@@ -19,9 +19,7 @@ class dbConnect {
 
       return $con;
   }
-}
 
-class dbQuery {
   # Check if the MySQL query has returned values
   public static function checkResults($query) {
     if ($query) {
@@ -44,7 +42,7 @@ class studentRegister {
       $query = mysqli_query($con, $sql);
 
       # Display results in the url.
-      if (dbQuery::checkResults($query) == true) {
+      if (dbConnect::checkResults($query) == true) {
         exit(header("Location: ../CST499/registration?register=success"));
       } else {
         exit(header("Location: ../CST499/registration?register=failed"));
@@ -145,7 +143,7 @@ class studentLogin {
       $query = mysqli_query($con, $sql);
 
       # Verify that the connection to the database was established.
-      if (dbQuery::checkResults($query) == true) {
+      if (dbConnect::checkResults($query) == true) {
 
         # Get all row data for the user if correct
         $row = mysqli_fetch_assoc($query);
@@ -194,9 +192,11 @@ class studentLogin {
   }
 }
 
-class courseRegister {
+class courseRegister
+{
 
-  public static function getEducationalData($identifier, $sql) {
+  public static function getEducationalData($identifier, $sql)
+  {
 
     $con = dbConnect::mysqlConn();
 
@@ -204,20 +204,20 @@ class courseRegister {
     $query = mysqli_query($con, $sql);
 
     # Check if query returned anything.
-    if (dbQuery::checkResults($query) == true) {
+    if (dbConnect::checkResults($query) == true) {
 
       $data = "";
 
       if ($identifier === "semesters") {
         # Get all semester collumn data.
         while ($row = mysqli_fetch_assoc($query)) {
-          $data .=  '<option value="' . $row['id'] . '">' . $row['semester'] . '</option>';
-        } 
+          $data .= '<option value="' . $row['id'] . '">' . $row['semester'] . '</option>';
+        }
       } else if ($identifier === "courses") {
-          # Get all semester collumn data.
-          while ($row = mysqli_fetch_assoc($query)) {
-            $data .=  '<option value="' . $row['id'] . '">' . $row['course'] . ' - Availability: ' . $row['availability'] .'</option>';
-          }
+        # Get all semester collumn data.
+        while ($row = mysqli_fetch_assoc($query)) {
+          $data .= '<option value="' . $row['id'] . '">' . $row['course'] . ' - Availability: ' . $row['availability'] . '</option>';
+        }
       }
 
       return $data;
@@ -227,7 +227,8 @@ class courseRegister {
     }
   }
 
-  public static function getCourses() {
+  public static function getCourses()
+  {
 
     # Set variables for the sql query.
     session_start();
@@ -242,7 +243,8 @@ class courseRegister {
     # Run the query.
     $query = mysqli_query($con, $sql);
 
-    if (dbQuery::checkResults($query) == true && mysqli_num_rows($query) > 0) {
+    # Verify the query returned a value and that the value is not empty.
+    if (dbConnect::checkResults($query) == true && mysqli_num_rows($query) > 0) {
 
       # Populate table headers.
       $data = '<tr style="background-color: rgb(117, 38, 59); color: white; font-size: 18px;">
@@ -261,13 +263,13 @@ class courseRegister {
       }
 
       $data .= '</tr>';
-
       return $data;
-      
-    } 
+
+    }
   }
 
-  public static function removeCourse($record, $course_name, $semesterID) {
+  public static function removeCourse($record, $course_name, $semesterID)
+  {
 
     $con = dbConnect::mysqlConn();
 
@@ -280,17 +282,18 @@ class courseRegister {
     $query = mysqli_multi_query($con, $sql);
 
     # Check if query returned anything.
-    if (dbQuery::checkResults($query) == true) {
+    if (dbConnect::checkResults($query) == true) {
       exit(header("Location: ../CST499/my_courses?course-delete=success"));
     } else {
       exit(header("Location: ../CST499/my_courses?error=db-error"));
     }
   }
 
-  public static function registerCourse($semesterID, $courseID) {
+  public static function registerCourse($semesterID, $courseID)
+  {
 
-    # Set global variables.
-    $availablity =  null;
+    # Set variables.
+    $availablity = null;
     $semester_name = "";
     $semester_id = "";
     $course_name = "";
@@ -313,8 +316,8 @@ class courseRegister {
     $query1 = mysqli_query($con, $sql1);
 
     # Check if query returned anything.
-    if (dbQuery::checkResults($query1) == true) {
-      
+    if (dbConnect::checkResults($query1) == true) {
+
       $row = mysqli_fetch_assoc($query1);
 
       if ($row == null) {
@@ -326,58 +329,107 @@ class courseRegister {
         $semester_name = $row['semester'];
         $semester_id = $row['semester_id'];
       }
-    
-    # Second query to check if the student is already registerd to the selected course.
-    $sql2 = "SELECT * FROM tblenrollment WHERE course = '$course_name' && firstName = '$first_name' && lastName = '$last_name' && studentID = '$student_id';";
 
-    # Run the second query.
-    $query2 = mysqli_query($con, $sql2);
+      # Second query to check if the student is already registerd to the selected course.
+      $sql2 = "SELECT * FROM tblenrollment WHERE course = '$course_name' && firstName = '$first_name' && lastName = '$last_name' && studentID = '$student_id';";
 
-    # Check if query returned anything.
-    if (dbQuery::checkResults($query2) == true) {
+      # Run the second query.
+      $query2 = mysqli_query($con, $sql2);
 
-      $row = mysqli_fetch_assoc($query2);
+      # Check if query returned anything.
+      if (dbConnect::checkResults($query2) == true) {
 
-      if ($row == null) {
-        $registered_course = null;
-      } else {
-        $registered_course = $row['course'];
+        $row = mysqli_fetch_assoc($query2);
+
+        if ($row == null) {
+          $registered_course = null;
+        } else {
+          $registered_course = $row['course'];
+        }
       }
-    }
 
-    # Verify that the student is not already register to the course.
-    if ($registered_course === $course_name) {
-      exit(header("Location: ../CST499/course_registration?enrolled=1"));
-    }
+      # Verify that the student is not already register to the course.
+      if ($registered_course === $course_name) {
+        exit(header("Location: ../CST499/course_registration?enrolled=1"));
+      }
 
-    # Verify that there is a spot available for the course.
-    if ($availablity === "0") {
-      exit(header("Location: ../CST499/course_registration?error=no-availability"));
-    } else {
+      # Verify that there is a spot available for the course.
+      if ($availablity === "0") {
+        session_start();
+        $_SESSION['availability'] = $availablity;
+        $_SESSION['course_name'] = $course_name;
+        $_SESSION['semester_name'] = $semester_name;
+        $_SESSION['semester_id'] = $semester_id;
+        exit(header("Location: ../CST499/course_registration?availability=0"));
+      } else {
 
-      # Register the student for the course selected to the tblenrollment table.
-      $sql3 = 
-      "INSERT INTO tblenrollment (firstName, lastName, course, semester, semester_id, studentID) VALUES 
+        # Register the student for the course selected to the tblenrollment table.
+        $sql3 =
+          "INSERT INTO tblenrollment (firstName, lastName, course, semester, semester_id, studentID) VALUES 
           ('$first_name', '$last_name', '$course_name', '$semester_name', '$semester_id', '$student_id');
       SELECT * FROM tblcourses WHERE semester_id = '$semesterID' && id = '$courseID';
       UPDATE tblcourses SET availability = availability - 1 WHERE id = '$courseID' && availability > 0 ;
       ";
-      
-      # Run new multiquery to add student and decrement the total availability.
-      $query3 = mysqli_multi_query($con, $sql3);
 
-      # Verify the new query.
-      if (dbQuery::checkResults($query3) == true) {
-        # Retrun back to the course register page and display a successful message.
-        exit(header("Location: ../CST499/course_registration?course-register=success"));
-      } else {
-        # Return an error warning on the course register page.
-        exit(header("Location: ../CST499/course_registration?error=db-error"));
+        # Run new multiquery to add student and decrement the total availability.
+        $query3 = mysqli_multi_query($con, $sql3);
+
+        # Verify the new query.
+        if (dbConnect::checkResults($query3) == true) {
+          # Retrun back to the course register page and display a successful message.
+          exit(header("Location: ../CST499/course_registration?course-register=success"));
+        } else {
+          # Return an error warning on the course register page.
+          exit(header("Location: ../CST499/course_registration?error=db-error"));
+        }
       }
-    }
     } else {
       header("Location: ../CST499/course_registration?error=db-error");
       exit;
+    }
+  }
+
+  public static function addToWaitlist() {
+
+    $con = dbConnect::mysqlConn();
+
+    session_start();
+    $course_name = $_SESSION['course_name'];
+    $semester_name = $_SESSION['semester_name'];
+    $semester_id = $_SESSION['semester_id'];
+    $student_id = $_SESSION['student_id'];
+    $fname = $_SESSION['username'];
+    $lname = $_SESSION['lastname'];
+    $email = $_SESSION['email'];
+
+    # Query to check if the student is already on the waiting list to the selected course.
+    $sql = "SELECT * FROM tblwaitlist WHERE course = '$course_name' && semester = '$semester_name' && studentID = '$student_id';";
+
+    # Run the query.
+    $query = mysqli_query($con, $sql);
+
+    # Check if query returned anything.
+    if (dbConnect::checkResults($query) == true) {
+
+      $row = mysqli_fetch_assoc($query);
+
+      # If no information is return with the applied student data. Add them to the waiting list.
+      if ($row == null) {
+        
+        $sql = "INSERT INTO tblwaitlist (firstName, lastName, course, semester, semester_id, studentID, email) VALUES 
+               ('$fname', '$lname', '$course_name', '$semester_name', '$semester_id', '$student_id', '$email')";
+        # Run the query
+        $query = mysqli_multi_query($con, $sql);
+
+        # Check if query returned anything.
+        if (dbConnect::checkResults($query) == true) {
+          exit(header("Location: ../CST499/course_registration?waitlistadd=success"));
+        } else {
+          exit(header("Location: ../CST499/course_registration?error=db-error"));
+        }
+      } else {
+        exit(header("Location: ../CST499/course_registration?waitlistadd=1"));
+      }
     }
   }
 }

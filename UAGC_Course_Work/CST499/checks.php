@@ -1,9 +1,9 @@
 <?php
 
-# Prevent access for this file from a url request.
+# Prevent access to this file from a url request.
 if(!isset($_SERVER['HTTP_REFERER'])){
   // redirect them to your desired location
-  exit(header('Location: ../CST499/index.php'));
+  exit(header('Location: ../CST499/index'));
 }
 
 include_once 'classes.php';

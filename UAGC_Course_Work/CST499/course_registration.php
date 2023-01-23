@@ -68,13 +68,26 @@ if (!isset($_SESSION['logged_in']) || !$_SESSION['logged_in']) {
       <?php
       # Error statements.
       if (isset($_GET["error"])) {
-        if ($_GET["error"] == "no-availability") {
-          echo '<p class="error">Unfortunately this course has no availability. Please select a different course.</p>';
-        } else if ($_GET["error"] == "no-data") {
+        if ($_GET["error"] == "no-data") {
           echo '<p class="error">No data returned from the database. Please contact your system administrator.</p>';
         } else if ($_GET["error"] == "db-error") {
           echo '<p class="error">There was an error in the database. Please contact your system administrator.</p>';
         } 
+      }
+      # Waiting list option
+      if (isset($_GET["availability"])) {
+        if ($_GET["availability"] == "0") {
+          echo '<div>
+                  <form method="POST" action="course_handling.php">
+                    <p class="error">Unfortunately course *' . $_SESSION['course_name'] . '* has no availability.</p>
+                    <p class="error">Would you like to be placed on the waiting list?</p>
+                    <div>
+                      <button type="wait_list" name="wait_list" id="wait_list">Yes</button>
+                      <button type="cancel" name="cancel" id="cancel">No</button>
+                    </div>
+                  </form>
+                </div>';
+        }
       }
       # Successful enrollment statement.
       if (isset($_GET["course-register"])) {
@@ -88,6 +101,16 @@ if (!isset($_SESSION['logged_in']) || !$_SESSION['logged_in']) {
       if (isset($_GET["enrolled"])) {
         if ($_GET["enrolled"] == "1") {
           echo '<p class="error">You are already enrolled for this course. Please choose a different course.</p>';
+        }
+      }
+      # Successful waitlist addition statement.
+      if (isset($_GET["waitlistadd"])) {
+        if ($_GET["waitlistadd"] == "success") {
+          echo '<p class="success">You have been added to the waitlist for course *' . $_SESSION['course_name'] . '*.</p>';
+        }
+        # Statement if the student is already on the waiting list.
+        if ($_GET["waitlistadd"] == "1") {
+          echo '<p class="error">You area already on the waitlist for course *' . $_SESSION['course_name'] . '*.</p>';
         }
       }
     ?>
